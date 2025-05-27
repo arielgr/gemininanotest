@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 export const getAiApi = () => {
   return {
-    create: window.ai.languageModel.create.bind(window.ai.languageModel),
+    create: languageModel.create.bind(languageModel),
   };
 };
 
