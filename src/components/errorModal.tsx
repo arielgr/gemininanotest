@@ -41,9 +41,15 @@ export function ErrorModal({
   };
 
   useEffect(() => {
-    setHasAi(!!window.ai);
+    // Remove dependency on window.ai, fetch the AI status differently
+    const checkIfAiAvailable = async () => {
+      const aiStatus = await checkAiStatus();
+      setHasAi(aiStatus === "readily" || aiStatus === "after-download");
+    };
+
     if (open) {
       checkStatus();
+      checkIfAiAvailable();
     }
   }, [open]);
 
@@ -65,7 +71,7 @@ export function ErrorModal({
               <Tooltip>
                 <TooltipTrigger tabIndex={-1}>
                   <div>
-                    Your <CodeSnippet>window.ai</CodeSnippet>
+                    Your <CodeSnippet>AI Model</CodeSnippet>
                     {"'s"} status:
                     <Badge className="text-base ml-2">{state}</Badge>
                   </div>
