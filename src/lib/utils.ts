@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 export const getAiApi = () => {
   return {
-    create: languageModel.create.bind(languageModel),
+    create: LanguageModel.create.bind(LanguageModel),
   };
 };
 
@@ -70,10 +70,10 @@ export async function checkEnv() {
 
 export const checkAiStatus = async () => {
   const state: AIModelAvailability = (
-    await languageModel.capabilities()
+    await LanguageModel.capabilities()
   ).available;
 
-  languageModel
+  LanguageModel
     .create()
     .then(() => {
       console.log("AI is ready");
