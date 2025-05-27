@@ -69,17 +69,22 @@ export async function checkEnv() {
 }
 
 export const checkAiStatus = async () => {
-  const state: AIModelAvailability = (
-    await LanguageModel.availability;
+  try {
+    const state: AIModelAvailability = await LanguageModel.availability;
 
-  LanguageModel
-    .create()
-    .then(() => {
-      console.log("AI is ready");
-    })
-    .catch(console.error);
-  return state;
+    LanguageModel.create()
+      .then(() => {
+        console.log("AI is ready");
+      })
+      .catch(console.error);
+
+    return state;
+  } catch (error) {
+    console.error('Error checking AI status:', error);
+    throw error;  // Optionally throw the error after logging it
+  }
 };
+
 export const convertTitleToPath = (title: string) => {
   return title.split(" ").join("_");
 };
