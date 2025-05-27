@@ -70,7 +70,7 @@ export async function checkEnv() {
 
 export const checkAiStatus = async () => {
   const state: AIModelAvailability = (
-    await LanguageModel.capabilities()
+    await LanguageModel()
   ).available;
 
   LanguageModel
