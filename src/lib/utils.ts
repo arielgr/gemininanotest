@@ -18,25 +18,16 @@ export async function checkSummarize() {
   }
 
   const version = getChromeVersion();
-  if (version < 129 && !("ai" in globalThis)) {
+  if (version < 129) {
     throw new Error(
       "Your browser is not supported. Please update to 129 version or greater",
     );
   }
 
-  if (!("ai" in globalThis)) {
-    throw new Error(
-      "Prompt API is not available, check your configuration in chrome://flags/#prompt-api-for-gemini-nano",
-    );
-  }
-
-  if (!window.ai.summarizer) {
-    throw new Error("Summarize API is not available");
-  }
-
-  const canSummarize = await window.ai.summarizer.capabilities();
-  const ready = canSummarize.available === "readily";
-  if (!ready) {
+  // No longer check for globalThis.ai or window.ai.summarizer.
+  // Instead, check LanguageModel availability.
+  const state = await checkAiStatus();
+  if (state !== "readily") {
     throw new Error("Summarize AI API is not ready");
   }
 }
@@ -48,18 +39,14 @@ export async function checkEnv() {
   }
 
   const version = getChromeVersion();
-  if (version < 127 && !("ai" in globalThis)) {
+  if (version < 127) {
     throw new Error(
       "Your browser is not supported. Please update to 127 version or greater.",
     );
   }
 
-  if (!("ai" in globalThis)) {
-    throw new Error(
-      "Prompt API is not available, check your configuration in chrome://flags/#prompt-api-for-gemini-nano",
-    );
-  }
-
+  // No longer check for globalThis.ai.
+  // Instead, check LanguageModel availability.
   const state = await checkAiStatus();
   if (state !== "readily") {
     throw new Error(
