@@ -64,7 +64,7 @@ export const checkAiStatus = async () => {
         console.log("AI is ready");
       })
       .catch(console.error);
-
+    console.log('State: ',state);
     return state;
   } catch (error) {
     console.error('Error checking AI status:', error);
