@@ -24,10 +24,9 @@ export async function checkSummarize() {
     );
   }
 
-  // No longer check for globalThis.ai or window.ai.summarizer.
-  // Instead, check LanguageModel availability.
+  // Use the correct availability API
   const state = await checkAiStatus();
-  if (state !== "readily") {
+  if (state !== "available") {
     throw new Error("Summarize AI API is not ready");
   }
 }
@@ -45,10 +44,9 @@ export async function checkEnv() {
     );
   }
 
-  // No longer check for globalThis.ai.
-  // Instead, check LanguageModel availability.
+  // Use the correct availability API
   const state = await checkAiStatus();
-  if (state !== "readily") {
+  if (state !== "available") {
     throw new Error(
       "Built-in AI is not ready, check your configuration in chrome://flags/#optimization-guide-on-device-model",
     );
@@ -57,14 +55,16 @@ export async function checkEnv() {
 
 export const checkAiStatus = async () => {
   try {
-    const state: AIModelAvailability = await LanguageModel.availability;
+    const state: string = await LanguageModel.availability();
+    // Optionally log for debugging:
+    console.log("LanguageModel availability:", state);
 
     LanguageModel.create()
       .then(() => {
         console.log("AI is ready");
       })
       .catch(console.error);
-    console.log('State: ',state);
+
     return state;
   } catch (error) {
     console.error('Error checking AI status:', error);
