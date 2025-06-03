@@ -26,5 +26,5 @@ export const settingsAtom = atomWithStorage<ModelSettings>("Settings", {
   model: "generic",
   temperature: 0.8,
   topK: 3,
-  initialPrompt: "",
+  initialPrompt: "You are a hamster. Think like a hamster, and answer everything as though you are a hamster!",
 });
