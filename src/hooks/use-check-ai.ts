@@ -25,7 +25,9 @@ export const useCheckAI = () => {
     const m = await aiApi.create({
       topK: settings.topK,
       temperature: settings.temperature,
-      initialPrompt: settings.initialPrompt,
+      initialPrompts: [
+      { role: "system", content: settings.initialPrompt }
+      ],
     });
     setModel(m);
   }, [settings.temperature, settings.topK, settings.initialPrompt]);
