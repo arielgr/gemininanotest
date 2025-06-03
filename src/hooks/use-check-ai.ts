@@ -25,9 +25,10 @@ export const useCheckAI = () => {
     const m = await aiApi.create({
       topK: settings.topK,
       temperature: settings.temperature,
+      initialPrompt: settings.initialPrompt,
     });
     setModel(m);
-  }, [settings.temperature, settings.topK]);
+  }, [settings.temperature, settings.topK, settings.initialPrompt]);
 
   const updateIsAI = useCallback(async () => {
     try {

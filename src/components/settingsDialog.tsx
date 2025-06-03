@@ -44,15 +44,30 @@ const formSchema = z.object({
   model: z.enum(["generic", "text"]),
   temperature: z.number().min(0).max(1),
   topK: z.number().min(1),
+  initialPrompt: z.string(),
 });
 export type ModelSettings = z.infer<typeof formSchema>;
+
 export const SettingsDialog = () => {
   const [settings, setSettings] = useAtom(settingsAtom);
   const { toast } = useToast();
+  // Fix: ensure model is always 'generic' or 'text' for form default values
   const form = useForm<ModelSettings>({
     resolver: zodResolver(formSchema),
-    defaultValues: settings,
-    values: settings,
+    defaultValues: {
+      ...settings,
+      model:
+        settings.model === "generic" || settings.model === "text"
+          ? settings.model
+          : "generic",
+    },
+    values: {
+      ...settings,
+      model:
+        settings.model === "generic" || settings.model === "text"
+          ? settings.model
+          : "generic",
+    },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -221,6 +236,41 @@ export const SettingsDialog = () => {
                       />
                     </FormControl>
                     <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="initialPrompt"
+                render={({ field }) => (
+                  <FormItem>
+                    <TooltipProvider delayDuration={0}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="flex items-center justify-between hover:cursor-help">
+                            <FormLabel className="hover:cursor-help">
+                              Initial Prompt
+                            </FormLabel>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent side="right" align="start" className="w-80">
+                          <p className="m-2">
+                            The initial prompt is sent to the model before any user input. Use it to set behavior, style, or context for the AI's responses.
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <FormControl>
+                      <textarea
+                        className="w-full min-h-[80px] rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        placeholder="e.g. You are a helpful assistant."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      This prompt will influence the model's responses at the start of each session.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

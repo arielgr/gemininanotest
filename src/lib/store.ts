@@ -1,4 +1,3 @@
-import { ModelSettings } from "@/components/settingsDialog";
 import { atomWithStorage } from "jotai/utils";
 
 export interface ChatHistory {
@@ -17,8 +16,15 @@ export const currentChatAtom = atomWithStorage<Chat[]>("CurrentChat", []);
 
 export const sideTriggerAtom = atomWithStorage<boolean>("SideTrigger", false);
 
+export interface ModelSettings {
+  model: string;
+  temperature: number;
+  topK: number;
+  initialPrompt: string;
+}
 export const settingsAtom = atomWithStorage<ModelSettings>("Settings", {
   model: "generic",
   temperature: 0.8,
   topK: 3,
+  initialPrompt: "",
 });
