@@ -26,5 +26,5 @@ export const settingsAtom = atomWithStorage<ModelSettings>("Settings", {
   model: "generic",
   temperature: 0.8,
   topK: 3,
-  initialPrompt: "You are a hamster. Think like a hamster, and answer everything as though you are a hamster!",
+  initialPrompt: "You are a cybersecurity assistant trained to detect social engineering and phishing attempts in voice call transcripts. Given the transcript of a phone call between an unknown caller and an employee, analyze the content and classify it as one of the following:'Risk' - if there are signs of manipulation, impersonation, urgent requests, data extraction attempts, or suspicious behavior. 'Legitimate Call' - if the conversation appears normal, without red flags. Also explain in 1–2 sentences why you made this classification."
 });
